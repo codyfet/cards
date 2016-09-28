@@ -149,7 +149,22 @@
     </script>
     <!-- +++++ Template accountTemplate +++++ -->
     <script type="text/template" id="accountTemplate">
-        Account template
+
+        Это проект страницы на которой будет представлена информация о вас
+
+        <table class="user-info" style="width: 100%; border: 1px solid gray;">
+            <tbody>
+                <tr>
+                    <td>Имя</td>
+                    <td><%= userModel.get("name") %></td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td><%= userModel.get("email") %></td>
+                </tr>
+            </tbody>
+        </table>
+
     </script>
     <!-- +++++ Templates cardsTableTemplate +++++ -->
     <script type="text/template" id="cardsTableTemplate">
@@ -355,8 +370,8 @@
                     <li style="display:none"><a href="#cardsTable">Карточки</a></li>
                     <li style="display:none"><a href="#learning">Обучение</a></li>
                     <li>
-                        <a href="#account">
-                            <div class="user-pic empty-avatar" disabled></div>
+                        <a href="javascript:void(0)">
+                            <div class="user-pic empty-avatar"></div>
                         </a>
                     </li>
                 </ul>

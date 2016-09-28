@@ -646,10 +646,6 @@ input[type="search"] {
     border-bottom-color: #3CC !important;
 }
 
-/*.sign-in-form .input:hover {
-    border-bottom-color: #dcdcdc;
-}
-*/
 .sign-in-form .input:invalid {
     box-shadow: none;
 }

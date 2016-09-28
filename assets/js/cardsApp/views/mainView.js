@@ -15,7 +15,12 @@ cardsApp.MainView = Backbone.View.extend({
     },
 
     initialize: function() {
-
+        //bind listeners for header menu items
+        $(".user-pic").bind("click", function(){
+            if(!$(this).hasClass("empty-avatar")){
+                router.navigate('account', true);
+            }
+        })
     },
 
     render: function() {
