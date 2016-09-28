@@ -581,22 +581,22 @@ input[type="search"] {
 
 /* Register form */
 
-.registration::selection {
+.sign-in-form::selection {
     background-color: #b5e2e7;
 }
 
-.registration::-moz-selection {
+.sign-in-form::-moz-selection {
     background-color: #8ac7d8;
 }
 
-.registration.container {
+.sign-in-form.container {
     display: -webkit-flex;
     display: flex;
     height: 100%;
 }
 
-.registration #logbox,
-.registration #regbox {
+.sign-in-form #logbox,
+.sign-in-form #regbox {
     padding: 10px;
     margin: 15px auto 0;
     width: 340px;
@@ -615,19 +615,19 @@ input[type="search"] {
     margin-top: 10px;
 }
 
-.registration h1 {
+.sign-in-form h1 {
     text-align: center;
     font-size: 175%;
     color: #757575;
     font-weight: 300;
 }
 
-.registration h1,
-.registration input {
+.sign-in-form h1,
+.sign-in-form input {
     font-family: "Open Sans", Helvetica, sans-serif;
 }
 
-.registration .input {
+.sign-in-form .input {
     width: 75%;
     height: 50px;
     display: block;
@@ -637,24 +637,28 @@ input[type="search"] {
     border-bottom: 1px solid #ccc;
 }
 
-.registration .input:focus {
+.sign-in-form .input.invalid {
+    border: 1px solid red;
+}
+
+.sign-in-form .input:focus {
     outline: none;
     border-bottom-color: #3CC !important;
 }
 
-.registration .input:hover {
+/*.sign-in-form .input:hover {
     border-bottom-color: #dcdcdc;
 }
-
-.registration .input:invalid {
+*/
+.sign-in-form .input:invalid {
     box-shadow: none;
 }
 
-.registration .pass:-webkit-autofill {
+.sign-in-form .pass:-webkit-autofill {
     -webkit-box-shadow: 0 0 0 1000px white inset;
 }
 
-.registration .inputButton {
+.sign-in-form .inputButton {
     position: relative;
     width: 85%;
     height: 50px;
@@ -668,18 +672,18 @@ input[type="search"] {
     box-shadow: 0 5px 0 #2CADAD;
 }
 
-.registration .inputButton:hover {
+.sign-in-form .inputButton:hover {
     top: 2px;
     -webkit-box-shadow: 0 3px 0 #2CADAD;
     -moz-box-shadow: 0 3px 0 #2CADAD;
     box-shadow: 0 3px 0 #2CADAD;
 }
 
-.registration .inputButton:active {
+.sign-in-form .inputButton:active {
     top: 5px;
     box-shadow: none;
 }
 
-.registration .inputButton:focus {
+.sign-in-form .inputButton:focus {
     outline: none;
 }
