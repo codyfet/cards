@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../docs-assets/ico/favicon.png">
+    <title>Cards - application for you and your friens!</title>
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <!-- Data tables CSS -->
+    <link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet">
+    <!-- Bootstrap-select Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.0/css/bootstrap-select.min.css">
+    <!-- Custom styles for this template -->
+    <link href="assets/css/main.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+    <!-- +++++ Template mainWrapper +++++ -->
+    <script type="text/template" id="mainWrapper">
+        <div class="row mt">
+            <div class="col-lg-6 col-lg-offset-3 centered">
+                <h3>Карточки</h3>
+                <hr>
+                <p>Сервис для изучения английского языка</p>
+            </div>
+            <div class="col-lg-6 col-lg-offset-3 centered registration">
+                <div id="regbox" style="display:none">
+                    <form id="signup" method="post" action="/signup">
+                        <!--<h1>create an account</h1>-->
+                        <input name="user[name]" type="text" placeholder="Имя пользователя" pattern="^[\w]{3,16}$" autofocus="autofocus" required="required" class="input pass" />
+                        <input name="user[password]" type="password" placeholder="Пароль" required="required" class="input pass" />
+                        <input name="user[password2]" type="password" placeholder="Подтвердите пароль" required="required" class="input pass" />
+                        <input name="user[email]" type="email" placeholder="Emai" class="input pass" />
+                        <button type="button" class="btn btn-success register-btn">Создать аккаунт</button>
+                        <div class="text-center">
+                            уже есть аккаунт? <a href="javascript:void(0)" id="sign-in">войти</a>
+                        </div>
+                    </form>
+                </div>
+                <div id="logbox">
+                    <form id="signup" method="post" action="/signup">
+                        <!--<h1>account login</h1>-->
+                        <!--<input name="user[name]" type="text" placeholder="Введите имя" class="input pass" /> -->
+                        <input name="user[email]" type="email" placeholder="Введите email" class="input pass" />
+                        <input name="user[password]" type="password" placeholder="Введите password" required="required" class="input pass" />
+                        <!--<input type="submit" value="Войти!" class="inputButton" />-->
+                        <button type="button" class="btn btn-success enter-btn">Войти</button>
+                        <div class="text-center">
+                            <a href="javascript:void(0)" id="create-account">создать аккаунт</a> - <a href="#" id="">забыл пароль</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </script>
+    <!-- +++++ Template mainWrapper +++++ -->
+    <script type="text/template" id="sessionTemplate">
+        <%
+            // console.log(" session.sessionCards");
+            // console.log( session.sessionCards);
+            var learnedCount = 0;
+            session.sessionCards.each(function(cardModel){
+                if(cardModel.get("learned")==true){
+                    learnedCount++;
+                }
+            });
+
+        %>
+            <div class="session-wrapper">
+                <h3>Карточка номер <%= session.currentPos %></h3>
+                <div class="card">
+                    <div class="wordsWrapper">
+                        <div class="left">
+                            <%= session.sessionCards.at(session.currentPos-1).get("term") %>
+                        </div>
+                        <div class="right question">?</div>
+                        <div class="right answer" style="display:none">
+                            <%= session.sessionCards.at(session.currentPos-1).get("translation") %>
+                        </div>
+                    </div>
+                </div>
+                <div class="buttons-wrapper">
+                    <div class="number-cards">Выучено
+                        <%= learnedCount %>/
+                            <%= session.sessionCards.models.length %>
+                    </div><a class='info-tooltip' data-toggle="tooltip" data-placement="right" title="Категории: Hello; Порядок: Алфавитный; Карточек: 20; Режим обучения: Английский"><i class='glyphicon glyphicon-info-sign'></i></a>
+                    <button type="button" class="btn btn-default btn-lg prev-btn" data-placement="bottom" title="Предыдущая">
+                        <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-default btn-lg answer-btn" data-placement="bottom" title="Ответ">
+                        <span class="glyphicon glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-default btn-lg dont-know-btn" data-placement="bottom" title="Не знаю">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-default btn-lg know-btn" data-placement="bottom" title="Знаю">
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-default btn-lg next-btn" data-placement="bottom" title="Следующая">
+                        <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+                    </button>
+                </div>
+                <table class="resultStatus">
+                    <tr>
+                        <% for(var i=0; i<10; i++){ %>
+                            <td class="counter <%= (session.sessionCards.at(i)!= undefined && session.sessionCards.at(i).get('learned')==true) ? 'success' : 'unsuccess' %> <%= (session.sessionCards.at(i)==undefined) ? 'hiddenVisibility' : '' %> <%= (i+1==session.currentPos) ? 'current' : '' %>" value="<%= i+1 %>">
+                                <%= i+1 %>
+                            </td>
+                            <% } %>
+                    </tr>
+                </table>
+                <% if(session.sessionCards.models.length>10) { %>
+                    <table class="resultStatus">
+                        <tr>
+                            <% for(var i=10; i<20; i++){ %>
+                                <td class="counter <%= (session.sessionCards.at(i)!= undefined && session.sessionCards.at(i).get('learned')==true) ? 'success' : 'unsuccess' %> <%= (session.sessionCards.at(i)==undefined) ? 'hiddenVisibility' : '' %> <%= (i+1==session.currentPos) ? 'current' : '' %>" value="<%= i+1 %>">
+                                    <%= i+1 %>
+                                </td>
+                                <% } %>
+                        </tr>
+                    </table>
+                    <% } %>
+                        <!--
+            <table class="settings">
+                <tr>
+                    <td>Категории</td>
+                    <td>Hello</td>
+                </tr>
+                <tr>
+                    <td>Порядок</td>
+                    <td>Алфавитный</td>
+                </tr>
+                <tr>
+                    <td>Карточек</td>
+                    <td>20</td>
+                </tr>
+                <tr>
+                    <td>Режим обучения</td>
+                    <td>Английский</td>
+                </tr>
+            </table>
+            -->
+            </div>
+    </script>
+    <!-- +++++ Template accountTemplate +++++ -->
+    <script type="text/template" id="accountTemplate">
+        Account template
+    </script>
+    <!-- +++++ Templates cardsTableTemplate +++++ -->
+    <script type="text/template" id="cardsTableTemplate">
+        <div id="table-section">
+            <div class="container">
+                <div class="row">
+                    <div class="form-group category-wrapper">
+                        <label for="category-list">Выберите категорию:</label>
+                        <select class="selectpicker form-control" id="category-list">
+                            <% _.each(categories.models, function(category, index) { %>
+                                <% if(index==0) { %>
+                                    <option>Все</option>
+                                    <% } %>
+                                        <option>
+                                            <%= category.get("categoryName") %>
+                                        </option>
+                                        <% }); %>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-default add-category" disabled><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить категорию</button>
+                </div>
+                <div class="row" style="position:relative;">
+                    <button type="button" class="btn btn-default add-new-card" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить карточку</button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="myModalLabel">Новая карточка</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form role="form">
+                                        <div class="form-group" style="margin-bottom: 35px;">
+                                            <label for="category-list">Выберите категорию:</label>
+                                            <select class="selectpicker form-control" id="category-list-add">
+                                                <% _.each(categories.models, function(category, index) { %>
+                                                    <option>
+                                                        <%= category.get("categoryName") %>
+                                                    </option>
+                                                    <% }); %>
+                                            </select>
+                                            <br>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="name" class="form-control" id="term" placeholder="Термин">
+                                            <br>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="email" class="form-control" id="translation" placeholder="Перевод">
+                                            <br>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                                    <button type="button" class="btn btn-success add-btn">Добавить</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-wrapper"></div>
+                </div>
+            </div>
+        </div>
+    </script>
+    <!-- +++++ Template learningWrapper +++++ -->
+    <script type="text/template" id="categoryTableTemplate">
+        <table id="example" class="display compact" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Термин</th>
+                    <th>Перевод</th>
+                    <th>Категория</th>
+                    <th>Статус</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>Термин</th>
+                    <th>Перевод</th>
+                    <th>Категория</th>
+                    <th>Статус</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </tfoot>
+            <tbody>
+                <% _.each(cards.models, function(model, index) { %>
+                    <tr id="<%= model.get('objectId') %>">
+                        <td>
+                            <%= model.get("term") %>
+                        </td>
+                        <td>
+                            <%= model.get("translation") %>
+                        </td>
+                        <td><span class="category-label"><%= model.get("category") %></span></td>
+                        <td><span class="category-label status <%= (model.get('status')==true) ? '' : 'inactive' %>"><%= (model.get("status")==true) ? "Активна" : "Неактивна" %></span></td>
+                        <td>
+                            <button type="button" class="btn btn-default btn-xs remove-btn"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Remove</button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-default btn-xs" disabled><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit</button>
+                        </td>
+                    </tr>
+                    <% }); %>
+            </tbody>
+        </table>
+    </script>
+    <!-- +++++ Template learningWrapper +++++ -->
+    <script type="text/template" id="learningTemplate">
+        <div id="white">
+            <div class="settings-table-wrapper">
+                <h4>Настройки обучающей сессии</h4>
+                <table class="table table-striped settings-table">
+                    <tr>
+                        <td>Тип сессии</td>
+                        <td>
+                            <select class="selectpicker" id="language" disabled>
+                                <option>Учить английский</option>
+                                <option>Учить русский</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Порядок</td>
+                        <td>
+                            <select class="selectpicker" id="order" disabled>
+                                <option>Алфавитный</option>
+                                <option>Случайный</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Категории</td>
+                        <td>
+                            <select class="selectpicker " id="category-list">
+                                <% _.each(categories.models, function(category, index) { %>
+                                    <% if(index==0) { %>
+                                        <option>Все</option>
+                                        <% } %>
+                                            <option>
+                                                <%= category.get("categoryName") %>
+                                            </option>
+                                            <% }); %>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Количество карточек</td>
+                        <td>
+                            <select class="selectpicker" id="count">
+                                <option>5</option>
+                                <option>10</option>
+                                <option>15</option>
+                                <option>20</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+                <!-- Large modal -->
+                <button class="btn btn-default start-session">Начать сессию</button>
+                <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="ed-wrapper">
+                                <div class="left-word">Слово</div>
+                                <div class="right-word">?</div>
+                            </div>
+                            <div class="buttons-wrapper">
+                                <button type="button" class="btn btn-default btn-lg">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                </button>
+                                <button type="button" class="btn btn-default btn-lg">
+                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /white -->
+    </script>
+</head>
+
+<body>
+    <!-- Static navbar -->
+    <div class="navbar navbar-inverse navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">CARDS</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li style="display:none"><a href="#cardsTable">Карточки</a></li>
+                    <li style="display:none"><a href="#learning">Обучение</a></li>
+                    <li>
+                        <a href="#account">
+                            <div class="user-pic empty-avatar" disabled></div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+    <!-- +++++ Main Section (Backbone) +++++ -->
+    <div class="container main-container">
+    </div>
+    <!-- +++++ Footer Section +++++ -->
+    <div id="footer">
+        <div class="container">
+            <div class="row">
+                <div id="status"></div>
+            </div>
+        </div>
+    </div>
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="assets/js/hover.zoom.js"></script>
+    <script src="assets/js/hover.zoom.conf.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script src="assets/js/bootstrap.min.js"></script>
+    <!-- DataTable plugin -->
+    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <!-- BACKBONE -->
+    <script type="text/javascript" src="assets/js/backbone/underscore-1.8.3.min.js"></script>
+    <script type="text/javascript" src="assets/js/backbone/backbone-0.9.2.min.js"></script>
+    <!-- SELECT Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.0/js/bootstrap-select.min.js"></script>
+    <!-- BACKENDLESS -->
+    <script src="http://api.backendless.com/sdk/js/latest/backendless.min.js"></script>
+    <!-- BACKENDLESS-BACKBONE Framework -->
+    <script src="assets/js/backendless-backbone-min.js"></script>
+    <!-- CARDS APP FILES -->
+    <script src="assets/js/cardsApp/models/appModel.js"></script>
+    <script src="assets/js/cardsApp/models/cardModel.js"></script>
+    <script src="assets/js/cardsApp/models/categoryModel.js"></script>
+    <script src="assets/js/cardsApp/models/userModel.js"></script>
+    <script src="assets/js/cardsApp/collections/cardsCollection.js"></script>
+    <script src="assets/js/cardsApp/collections/categoriesCollection.js"></script>
+    <script src="assets/js/cardsApp/views/mainView.js"></script>
+    <script src="assets/js/cardsApp/views/cardsTableView.js"></script>
+    <script src="assets/js/cardsApp/views/learningView.js"></script>
+    <script src="assets/js/cardsApp/views/sessionView.js"></script>
+    <script src="assets/js/cardsApp/views/accountView.js"></script>
+    <script src="assets/js/cardsApp/cards.js"></script>
+</body>
+
+</html>
