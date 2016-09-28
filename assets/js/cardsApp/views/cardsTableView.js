@@ -8,6 +8,7 @@ cardsApp.CardsTableView = Backbone.View.extend({
         "click .add-new-card" : "openCard",
         "changed.bs.select .selectpicker#category-list" : "changeCategory", // special event of select, see for details  https://silviomoreto.github.io/bootstrap-select/options/
         "click .add-btn" : "addCard",
+        "click .add-category-btn" : "addCategory",
         "click .remove-btn" : "removeCard",
     	"click .status" : "changeStatus"
     },
@@ -51,15 +52,7 @@ cardsApp.CardsTableView = Backbone.View.extend({
         var that = this;
         var categories = new cardsApp.CategoriesCollection();
 
-        var defCat = "";
-        if(categoryName=="Все"){
-            defCat = categories.fetch();
-        }
-        else {
-            defCat = categories.fetchCategory(categoryName);
-        }
-
-        $.when(defCat).then(function(){
+        $.when(categories.fetchCategory(categoryName)).then(function(){
             categories.each(function(category){
                 // get all cards for this category
                 var cardsCollection = new cardsApp.CardsCollection();
@@ -91,7 +84,8 @@ cardsApp.CardsTableView = Backbone.View.extend({
             "term": $("#term").val(),
             "translation": $("#translation").val(),
             "category": selectedCategory,
-            "status": true
+            "status": true,
+            "userId": appModel.get("loggedUser").objectId
         });
 
         // this logic redraws views before we do save request to server
@@ -108,6 +102,13 @@ cardsApp.CardsTableView = Backbone.View.extend({
             category.addCard(newCard);
         });
         $('#myModal').modal('hide');
+    },
+    addCategory: function(){
+        var newCategory = new cardsApp.CategoryModel({
+            categoryName: $("#category").val(),
+            userId: appModel.get("loggedUser").objectId
+        });
+        newCategory.save();
     },
     removeCard: function(e){
         var that = this;

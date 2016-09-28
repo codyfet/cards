@@ -7,9 +7,11 @@ cardsApp.CategoriesCollection = Backbone.Collection.extend({
     },
     // pass "All" or empty value as 'category' if you want to fetch all categories
     fetchCategory: function(category, options){
-        var condition = "";
-        if (category!= undefined && category!="All"){
-            condition = "categoryName=" + encodeURIComponent("'" + category + "'")
+        // where userId = [current user id]
+        var condition = "userId=" + encodeURIComponent("'" + appModel.get("loggedUser").objectId + "'");
+        // where userId = [current user id] AND categoryName = [category]
+        if (category!= undefined && category!="Все"){
+            condition += " AND categoryName=" + encodeURIComponent("'" + category + "'")
         }
         var opt = $.extend({}, options, { "condition" : condition });
         return this.fetch(opt);

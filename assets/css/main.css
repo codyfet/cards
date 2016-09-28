@@ -396,9 +396,6 @@ body {
     height: 65px;
     width: 65px;
     border-radius: 70px;
-    position: absolute;
-    top: -9px;
-    left: 25px;
     background: url("../img/userpic.png");
     background-size: 100%;
     background-repeat: no-repeat;

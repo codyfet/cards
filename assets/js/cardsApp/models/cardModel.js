@@ -17,9 +17,3 @@ cardsApp.CardModel = Backbone.Model.extend({
     }
     //https://www.npmjs.com/package/backendless-backbone
 });
-
-// cardsApp.CardModel.bind("remove", function() {
-//     console.log("REMOVED eventr");
-//     this.destroy();
-// });
-

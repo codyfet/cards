@@ -3,20 +3,14 @@ var cardsApp = cardsApp || {}
 cardsApp.CategoryModel = Backbone.Model.extend({
 
     defaults: {
-        categoryName: "All",                // collection will contain all categories by default
-        cards: []                           // array of card models
+        categoryName: "All",                 // collection will contain all categories by default
+        cards: [],                           // array of card models
+        userId: null
     },
     schemaName: "Category",
     idAttribute: 'categoryName',
     initialize: function(opt) {
-        // console.log("this categoryModel befor");
-        // console.log(this);
-        // // console.log("opt");
-        // // console.log(opt);
-        // var cards = this.get("cards");
-        // this.cards = new cardsApp.CardsCollection(cards);
-        // console.log("this categoryModel after");
-        // console.log(this);
+
     },
     addCard: function(card){
         if (card instanceof cardsApp.CardModel) {
