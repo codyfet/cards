@@ -14,7 +14,7 @@ cardsApp.LearningView = Backbone.View.extend({
 
         var that = this;
         var categories = new cardsApp.CategoriesCollection();
-        categories.fetch().done(function(){
+        categories.fetchCategory().done(function(){
             that.categories = categories;
             that.render();
             that.$el.find(".selectpicker").selectpicker();

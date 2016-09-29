@@ -21,7 +21,7 @@ cardsApp.CardsTableView = Backbone.View.extend({
         // this.model.bind('remove', this.onModelAdded, this);
         var that = this;
         var categories = new cardsApp.CategoriesCollection();
-        categories.fetch().done(function(){
+        categories.fetchCategory().done(function(){
             that.categories = categories;
             that.render();
             that.$el.find(".selectpicker").selectpicker();
@@ -109,6 +109,7 @@ cardsApp.CardsTableView = Backbone.View.extend({
             userId: appModel.get("loggedUser").objectId
         });
         newCategory.save();
+        $('#myModalAddCategory').modal('hide');
     },
     removeCard: function(e){
         var that = this;
