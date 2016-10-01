@@ -34,18 +34,25 @@ cardsApp.LearningView = Backbone.View.extend({
         var settings = {
             "language" : $("#language").find("option:selected").attr("value"),
             "order": $("#order").find("option:selected").attr("value"),
-            "count": $("#count").find("option:selected").text()
+            "count": parseInt($("#count").find("option:selected").text())
         }
 
         var that = this;
         this.categories.fetchCategory(categoryName).done(function(){
+            var counterCards = 0;
             that.categories.each(function(category){
                 var cardsCollection = new cardsApp.CardsCollection();
                 cardsCollection = category.get("cards");
                 if(cardsCollection.length>0){
                     cardsCollection.each(function(card){
+                        // check if we populate all cards that we need for this session
+                        // if it's enough -> exit from the loop
+                        if(counterCards>=settings.count){
+                            return false;
+                        }
                         card.set("learned", false);
                         that.cardsForLearning.add(card);
+                        counterCards+=1;
                     });
                 }
             });
