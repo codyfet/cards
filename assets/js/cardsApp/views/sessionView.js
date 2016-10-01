@@ -15,32 +15,12 @@ cardsApp.SessionView = Backbone.View.extend({
     },
 
     initialize: function(options) {
-
-        
-
         this.session = {
             sessionCards : this.model,
-            currentPos : 1
+            notLearnedCards : new Backbone.Collection(this.model.toJSON()), // cloned sesionCards
+            currentPos : 1,
+            order : options.settings.order // sequential or randowm
         }
-
-        var that = this;
-
-        console.log("this.session");
-        console.log(this.session);
-        // filter by categories
-        // var categories = options.settings.categories;
-        // $.each(this.model, function(index, collection){
-        //     collection.each(function(card){
-        //         if($.inArray(card.get("category"), categories) != -1){
-        //             $.extend(card, {"learned":false})
-        //             that.session.sessionCards.push(card);
-        //         }
-        //     });
-        // });
-
-        // console.log("sessionCards");
-        // console.log(sessionCards);
-
         this.render();
     },
 
@@ -74,52 +54,66 @@ cardsApp.SessionView = Backbone.View.extend({
     },
     nextCard: function(){
         var currentPos = this.session.currentPos;
+        // random mode
+        if(this.session.order=="random"){
+            var randomNumber = this.randomIntFromInterval(0, this.session.notLearnedCards.models.length-1);
 
-        // (function(array, index) {
-
-        //     var right = array.filter(function(e, i) {
-        //         return i >= index;
-        //     });
-
-        //     var left = array.filter(function(e, i) {
-        //         return i < index;
-        //     });
-        //     var ind = right.indexOf(false);
-
-        //     return (!!~ind) ? ind + left.length : left.indexOf(false);
-
-        // }([false, false, true, false, true], 2));
-
-
-        // if next card already learned
-        // we need to find next not learned
-        if(this.session.sessionCards.models[currentPos-1].get("learned")==true){
-            var found = false;
-            // search in right side
-            for(var i=currentPos; i<this.session.sessionCards.models.length; i++){
-                if(this.session.sessionCards.models[i].get("learned")==false){
-                    currentPos = i+1;
-                    found = true;
-                    break;
-                }
+            // if all cards are already learned -> return from function
+            if(this.session.notLearnedCards.length==0){
+                this.finishSession();
+                return false;
             }
-            // search in left side
-            if(!found){
-                for(var i=0; i<this.session.sessionCards.models.length; i++){
-                    if(this.session.sessionCards.models[i].get("learned")==false){
-                        currentPos = i+1;
-                        break;
-                    }
-                }
+            var randomNotLearnedCard = this.session.notLearnedCards.at(randomNumber);
+            var originalCard = this.session.sessionCards.where({objectId: randomNotLearnedCard.get("objectId")})[0];
+            var index = this.session.sessionCards.indexOf(originalCard);
+            this.session.currentPos = index+1;
+        }
+        // sequential mode
+        else if("sequential"){
+            if(currentPos!=this.session.sessionCards.models.length){
+                this.session.currentPos += 1;
+            }
+            // if it is the last card in sequence -> return from function
+            else{
+                this.finishSession();
+                return false;
             }
         }
-        else {
-            currentPos += 1;
-        }
-        this.session.currentPos = currentPos;
         this.render();
-
     },
+    randomIntFromInterval: function(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    },
+
+    // getNextNotLearnedPos: function(currentPos){
+    //     var nextNotLearnedPos=1;
+    //     // if next card already learned
+    //     // we need to find next not learned
+    //     if(this.session.sessionCards.models[currentPos-1].get("learned")==true){
+    //         var found = false;
+    //         // search in right side
+    //         for(var i=currentPos; i<this.session.sessionCards.models.length; i++){
+    //             if(this.session.sessionCards.models[i].get("learned")==false){
+    //                 nextNotLearnedPos = i+1;
+    //                 found = true;
+    //                 break;
+    //             }
+    //         }
+    //         // search in left side
+    //         if(!found){
+    //             for(var i=0; i<this.session.sessionCards.models.length; i++){
+    //                 if(this.session.sessionCards.models[i].get("learned")==false){
+    //                     nextNotLearnedPos = i+1;
+    //                     break;
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     else {
+    //         nextNotLearnedPos += 1;
+    //     }
+    //     return nextNotLearnedPos;
+    // },
     previousCard: function(){
         var currentPos = this.session.currentPos;
         currentPos -= 1;
@@ -143,6 +137,9 @@ cardsApp.SessionView = Backbone.View.extend({
         $(".counter[value='" + this.session.currentPos + "']").addClass("success");
         var cardModel = this.model.at(currentPos-1);
         cardModel.set("learned", true);
+
+        this.session.notLearnedCards.remove(cardModel);
+
         this.nextCard();
     },
     finishSession: function(){
