@@ -75,11 +75,12 @@
                 <h3>Карточка номер <%= session.currentPos %></h3>
                 <div class="card">
                     <div class="wordsWrapper">
-                        <div class="left">
+                        <div class="left english question" style="<%= (session.language=='english') ? '' : 'display:none' %>">?</div>
+                        <div class="left russian answer" style="<%= (session.language=='russian') ? '' : 'display:none' %>">
                             <%= session.sessionCards.at(session.currentPos-1).get("term") %>
                         </div>
-                        <div class="right question">?</div>
-                        <div class="right answer" style="display:none">
+                        <div class="right russian question" style="<%= (session.language=='russian') ? '' : 'display:none' %>">?</div>
+                        <div class="right english answer" style="<%= (session.language=='english') ? '' : 'display:none' %>">
                             <%= session.sessionCards.at(session.currentPos-1).get("translation") %>
                         </div>
                     </div>
@@ -312,9 +313,9 @@
                     <tr>
                         <td>Тип сессии</td>
                         <td>
-                            <select class="selectpicker" id="language" disabled>
-                                <option>Учить английский</option>
-                                <option>Учить русский</option>
+                            <select class="selectpicker" id="language">
+                                <option value="english">Учить английский</option>
+                                <option value="russian">Учить русский</option>
                             </select>
                         </td>
                     </tr>

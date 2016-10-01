@@ -19,7 +19,8 @@ cardsApp.SessionView = Backbone.View.extend({
             sessionCards : this.model,
             notLearnedCards : new Backbone.Collection(this.model.toJSON()), // cloned sesionCards
             currentPos : 1,
-            order : options.settings.order // sequential or randowm
+            order : options.settings.order, // sequential or randowm
+            language: options.settings.language // english or russian
         }
         this.render();
     },
@@ -41,14 +42,14 @@ cardsApp.SessionView = Backbone.View.extend({
         if($(element).hasClass("glyphicon-eye-open")){
             $(element).removeClass("glyphicon-eye-open");
             $(element).addClass("glyphicon-eye-close");
-            $(".question").hide();
-            $(".answer").show();
+            (this.session.language=="english") ? $(".english.question").hide() : $(".russian.question").hide();
+            (this.session.language=="english") ? $(".russian.answer").show() : $(".english.answer").show();
         }
         else {
             $(element).removeClass("glyphicon-eye-close");
             $(element).addClass("glyphicon-eye-open");
-            $(".question").show();
-            $(".answer").hide();
+            (this.session.language=="english") ? $(".english.question").show() : $(".russian.question").show();
+            (this.session.language=="english") ? $(".russian.answer").hide() : $(".english.answer").hide();
         }
 
     },

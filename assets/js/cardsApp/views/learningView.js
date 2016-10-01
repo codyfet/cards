@@ -32,7 +32,7 @@ cardsApp.LearningView = Backbone.View.extend({
         var categoryName = $("#category-list").find("option:selected").val();
 
         var settings = {
-            "language" : $("#language").find("option:selected").text(),
+            "language" : $("#language").find("option:selected").attr("value"),
             "order": $("#order").find("option:selected").attr("value"),
             "count": $("#count").find("option:selected").text()
         }
