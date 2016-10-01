@@ -29,7 +29,7 @@ cardsApp.LearningView = Backbone.View.extend({
     },
     startSession: function(){
 
-        var categoryName = $("#category-list").find("option:selected").val();
+        var categoryName = $("#category-list-session").find("option:selected").val();
 
         var settings = {
             "language" : $("#language").find("option:selected").attr("value"),
@@ -38,31 +38,27 @@ cardsApp.LearningView = Backbone.View.extend({
         }
 
         var that = this;
+        this.categories.fetchCategory(categoryName).done(function(){
+            that.categories.each(function(category){
+                var cardsCollection = new cardsApp.CardsCollection();
+                cardsCollection = category.get("cards");
+                if(cardsCollection.length>0){
+                    cardsCollection.each(function(card){
+                        card.set("learned", false);
+                        that.cardsForLearning.add(card);
+                    });
+                }
+            });
 
-        var defCat = "";
-        if(categoryName=="Все"){
-            defCat = that.categories.fetch();
-        }
-        else {
-            defCat = that.categories.fetchCategory(categoryName);
-        }
+            var $elem = $(that.el).html("");
+            var session = new cardsApp.SessionView({
+                model: that.cardsForLearning,
+                el: $elem,
+                settings: settings
+            });
+        });
 
-        that.categories.each(function(category){
-            var cardsCollection = new cardsApp.CardsCollection();
-            cardsCollection = category.get("cards");
-            if(cardsCollection.length>0){
-                cardsCollection.each(function(card){
-                    card.set("learned", false);
-                    that.cardsForLearning.add(card);
-                });
-            }
-        });
-        var $elem = $(that.el).html("");
-        var session = new cardsApp.SessionView({
-            model: that.cardsForLearning,
-            el: $elem,
-            settings: settings
-        });
+
 
     }
 
