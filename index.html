@@ -72,6 +72,28 @@
 
         %>
             <div class="session-wrapper">
+
+                <form class="form-inline session-settings">
+                    <div class="form-group col-xs-4">
+                        <label for="learning-mode">Режим обучения</label>
+                        <select class="selectpicker form-control" id="learning-mode">
+                            <option>Учить русский</option>
+                            <option>Учить английский</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-xs-4">
+                        <label for="order-mode">Порядок</label>
+                        <select class="selectpicker form-control" id="order-mode">
+                            <option>Последовательный</option>
+                            <option>Случайный</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-xs-4">
+                        <label for="add-cards-btn" class="hiddenVisibility">Добавить карточек</label>
+                        <button id="add-cards-btn" class="form-control btn btn-default" disabled>Добавить</button>
+                    </div>
+                </form>
+
                 <h3>Карточка номер <%= session.currentPos %></h3>
                 <div class="card">
                     <div class="wordsWrapper">
@@ -86,10 +108,7 @@
                     </div>
                 </div>
                 <div class="buttons-wrapper">
-                    <div class="number-cards">Выучено
-                        <%= learnedCount %>/
-                            <%= session.sessionCards.models.length %>
-                    </div><a class='info-tooltip' data-toggle="tooltip" data-placement="right" title="Категории: Hello; Порядок: Алфавитный; Карточек: 20; Режим обучения: Английский"><i class='glyphicon glyphicon-info-sign'></i></a>
+                    <div class="number-cards">Выучено <%= learnedCount %>/<%= session.sessionCards.models.length %></div>
                     <button type="button" class="btn btn-default btn-lg prev-btn" data-placement="bottom" title="Предыдущая">
                         <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
                     </button>
@@ -311,7 +330,7 @@
                 <h4>Настройки обучающей сессии</h4>
                 <table class="table table-striped settings-table">
                     <tr>
-                        <td>Тип сессии</td>
+                        <td>Режим обучения</td>
                         <td>
                             <select class="selectpicker" id="language">
                                 <option value="english">Учить английский</option>

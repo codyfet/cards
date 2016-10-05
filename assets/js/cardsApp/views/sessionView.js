@@ -29,6 +29,7 @@ cardsApp.SessionView = Backbone.View.extend({
         var tmpl = _.template(this.template);
         this.$el.html("");
         this.$el.append(tmpl({session:this.session}));
+        this.$el.find(".selectpicker").selectpicker();
         return this;
     },
 
