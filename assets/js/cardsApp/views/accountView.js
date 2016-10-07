@@ -14,7 +14,8 @@ cardsApp.AccountView = Backbone.View.extend({
 
     render: function() {
         var tmpl = _.template(this.template);
-        this.$el.append(tmpl( /*{ "categories": this.categories }*/ ));
+        var userModel = new cardsApp.UserModel(appModel.get("loggedUser"));
+        this.$el.append(tmpl( { "userModel": userModel } ));
         return this;
     }
 

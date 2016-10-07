@@ -706,3 +706,26 @@ input[type="search"] {
 .sign-in-form .inputButton:focus {
     outline: none;
 }
+
+
+.account input.hidden {
+  position: absolute;
+  left: -9999px;
+}
+
+.account #profile-image1 {
+  cursor: pointer;
+  width: 100px;
+  height: 100px;
+  border: 2px solid #03b1ce;
+}
+
+.account .tital {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.account .bot-border {
+  border-bottom: 1px #f8f8f8 solid;
+  margin: 5px 0 5px 0
+}
