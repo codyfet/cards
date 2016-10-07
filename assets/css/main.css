@@ -392,6 +392,10 @@ body {
     font-family: Gerbera;
 }
 
+.logged-header {
+    display: none;
+}
+
 .user-pic {
     height: 65px;
     width: 65px;
@@ -627,18 +631,11 @@ input[type="search"] {
     margin: 15px auto 0;
     width: 340px;
     background-color: #fff;
-    border: 1px solid #ccc;
+    //border: 1px solid #ccc;
 }
 
 .enter-btn {
     width: 135px;
-    margin-bottom: 5px;
-    margin-top: 10px;
-}
-
-.register-btn {
-    margin-bottom: 5px;
-    margin-top: 10px;
 }
 
 .sign-in-form h1 {

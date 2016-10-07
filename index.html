@@ -24,39 +24,72 @@
     <![endif]-->
     <!-- +++++ Template mainWrapper +++++ -->
     <script type="text/template" id="mainWrapper">
+
+        <div id="loginModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Вход</h4>
+                    </div>
+                    <div class="modal-body sign-in-form">
+                        <div id="logbox">
+                            <form id="signup" method="post" action="/signup">
+                                <!--<input name="user[name]" type="text" placeholder="Введите имя" class="input pass" /> -->
+                                <input name="user[email]" type="email" placeholder="Введите email" class="input email" />
+                                <input name="user[password]" type="password" placeholder="Введите password" required="required" class="input pass" />
+                                <div class="text-center">
+                                    <a href="javascript:void(0)" id="create-account">создать аккаунт</a> - <a href="#" id="">забыл пароль</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                        <button type="button" class="btn btn-success enter-btn" data-dismiss="modal" >Войти</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="registerModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Регистрация</h4>
+                    </div>
+                    <div class="modal-body sign-in-form">
+                        <div id="regbox">
+                            <form id="signup" method="post" action="/signup">
+                                <input name="user[name]" type="text" placeholder="Имя пользователя" pattern="^[\w]{3,16}$" autofocus="autofocus" required="required" class="input pass" />
+                                <input name="user[password]" type="password" placeholder="Пароль" required="required" class="input pass" />
+                                <input name="user[password2]" type="password" placeholder="Подтвердите пароль" required="required" class="input pass" />
+                                <input name="user[email]" type="email" placeholder="Email" class="input pass" />
+                                <div class="text-center">
+                                    уже есть аккаунт? <a href="javascript:void(0)" id="sign-in">войти</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                        <button type="button" class="btn btn-success register-btn" data-dismiss="modal">Создать аккаунт</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row mt">
             <div class="col-lg-6 col-lg-offset-3 centered">
                 <h3>Карточки</h3>
                 <hr>
-                <p>Сервис для изучения английского языка</p>
-            </div>
-            <div class="col-lg-6 col-lg-offset-3 centered sign-in-form">
-                <div id="regbox" style="display:none">
-                    <form id="signup" method="post" action="/signup">
-                        <input name="user[name]" type="text" placeholder="Имя пользователя" pattern="^[\w]{3,16}$" autofocus="autofocus" required="required" class="input pass" />
-                        <input name="user[password]" type="password" placeholder="Пароль" required="required" class="input pass" />
-                        <input name="user[password2]" type="password" placeholder="Подтвердите пароль" required="required" class="input pass" />
-                        <input name="user[email]" type="email" placeholder="Email" class="input pass" />
-                        <button type="button" class="btn btn-success register-btn">Создать аккаунт</button>
-                        <div class="text-center">
-                            уже есть аккаунт? <a href="javascript:void(0)" id="sign-in">войти</a>
-                        </div>
-                    </form>
-                </div>
-                <div id="logbox">
-                    <form id="signup" method="post" action="/signup">
-                        <!--<input name="user[name]" type="text" placeholder="Введите имя" class="input pass" /> -->
-                        <input name="user[email]" type="email" placeholder="Введите email" class="input email" />
-                        <input name="user[password]" type="password" placeholder="Введите password" required="required" class="input pass" />
-                        <!--<input type="submit" value="Войти!" class="inputButton" />-->
-                        <button type="button" class="btn btn-success enter-btn">Войти</button>
-                        <div class="text-center">
-                            <a href="javascript:void(0)" id="create-account">создать аккаунт</a> - <a href="#" id="">забыл пароль</a>
-                        </div>
-                    </form>
-                </div>
+                <p>Здесь будут баннеры</p>
             </div>
         </div>
+
     </script>
     <!-- +++++ Template mainWrapper +++++ -->
     <script type="text/template" id="sessionTemplate">
@@ -412,14 +445,19 @@
                 <a class="navbar-brand" href="index.html">CARDS</a>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li style="display:none; margin-top: 20px;"><a href="#cardsTable">Карточки</a></li>
-                    <li style="display:none; margin-top: 20px;"><a href="#learning">Обучение</a></li>
+                <ul class="nav navbar-nav navbar-right logged-header">
+                    <li style="margin-top: 20px;"><a href="#cardsTable">Карточки</a></li>
+                    <li style="margin-top: 20px;"><a href="#learning">Обучение</a></li>
                     <li>
                         <a href="javascript:void(0)">
                             <div class="user-pic empty-avatar"></div>
                         </a>
                     </li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right not-logged-header">
+                    <li style="margin-top: 20px;"><a href="javascript:void(0)" class="login-header">Вход</a></li>
+                    <li style="margin-top: 20px;"><a href="javascript:void(0)" class="register-header">Создать аккаунт</a></li>
                 </ul>
             </div>
             <!--/.nav-collapse -->
