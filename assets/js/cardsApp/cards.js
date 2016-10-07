@@ -15,21 +15,33 @@ Backendless.initApp(Defaults.APPLICATION_ID, Defaults.SECRET_KEY, Defaults.VERSI
 
 var appModel = new cardsApp.AppModel();
 
-var mainView = new cardsApp.MainView({
-    model: appModel,
-    el: $('.main-container')
-});
-mainView.render();
-
 var Router = Backbone.Router.extend({
     routes: {
-        "": "openMain",
+        "main": "openMain",
         "cardsTable": "openCardsTable",
         "learning": "openLearning",
         "account": "openAccount"
 
         // "edit/:index": "editToDo",
         // "delete/:index": "delteToDo"
+    },
+    'openMain': function(){
+        $('.main-container').html('');
+
+        if(appModel.get("loggedUser")==""){
+            $(".navbar-nav.logged-header").hide();
+            $(".navbar-nav.not-logged-header").show();
+        }
+        else {
+            $(".navbar-nav.logged-header").show();
+            $(".navbar-nav.not-logged-header").hide();
+        }
+
+        var mainView = new cardsApp.MainView({
+            //model: appModel,
+            el: $('.main-container')
+        });
+        mainView.render();
     },
     'openCardsTable': function() {
         $('.main-container').html('');
@@ -60,3 +72,6 @@ var Router = Backbone.Router.extend({
 var router = new Router();
 
 Backbone.history.start();
+
+// open main page when application starts
+router.navigate("main", true);

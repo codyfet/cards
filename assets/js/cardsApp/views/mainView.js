@@ -27,6 +27,9 @@ cardsApp.MainView = Backbone.View.extend({
         $(".register-header").click(function(){
             that.openRegisterModal();
         });
+        $(".navbar-brand").click(function(){
+            that.openMainPage();
+        });
     },
 
     render: function() {
@@ -96,7 +99,6 @@ cardsApp.MainView = Backbone.View.extend({
         appModel.set("loggedUser", user);
         router.navigate('cardsTable', true);
         $(".user-pic").removeClass("empty-avatar");
-        $(".navbar-nav").find("li").show();
     },
 
     gotError: function(err) { // see more on error handling
@@ -116,9 +118,6 @@ cardsApp.MainView = Backbone.View.extend({
         $("#status").html("вы успешно вошли как " + loggedInUser.name);
         appModel.set("loggedUser", loggedInUser);
         router.navigate('cardsTable', true);
-        $(".user-pic").removeClass("empty-avatar");
-        $(".navbar-nav.logged-header").show();
-        $(".navbar-nav.not-logged-header").hide();
     },
 
     handleFault: function(backendlessFault) {
@@ -218,6 +217,8 @@ cardsApp.MainView = Backbone.View.extend({
             $(this).find('input').first().focus();
         });
         $('#loginModal').modal('show');
+    },
+    openMainPage: function(){
+        router.navigate("main", true);
     }
-
 });
