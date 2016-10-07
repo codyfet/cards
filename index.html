@@ -72,25 +72,24 @@
 
         %>
             <div class="session-wrapper">
-
                 <form class="form-inline session-settings">
                     <div class="form-group col-xs-4">
                         <label for="learning-mode">Режим обучения</label>
                         <select class="selectpicker form-control" id="learning-mode">
-                            <option>Учить русский</option>
-                            <option>Учить английский</option>
+                            <option value="russian" <%= session.language=="russian" ? 'selected' : '' %>>Учить русский</option>
+                            <option value="english" <%= session.language=="english" ? 'selected' : '' %>>Учить английский</option>
                         </select>
                     </div>
                     <div class="form-group col-xs-4">
                         <label for="order-mode">Порядок</label>
                         <select class="selectpicker form-control" id="order-mode">
-                            <option>Последовательный</option>
-                            <option>Случайный</option>
+                            <option value="sequential" <%= session.order=="sequential" ? 'selected' : '' %>>Последовательный</option>
+                            <option value="random" <%= session.order=="random" ? 'selected' : '' %>>Случайный</option>
                         </select>
                     </div>
                     <div class="form-group col-xs-4">
                         <label for="add-cards-btn" class="hiddenVisibility">Добавить карточек</label>
-                        <button id="add-cards-btn" class="form-control btn btn-default" disabled>Добавить</button>
+                        <button id="add-cards-btn" class="form-control btn btn-default" disabled>Добавить карточки</button>
                     </div>
                 </form>
 

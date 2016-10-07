@@ -11,7 +11,9 @@ cardsApp.SessionView = Backbone.View.extend({
         "click .prev-btn" : "previousCard",
         "click .counter " : "loadCard",
         "click .dont-know-btn " : "notLearned",
-        "click .know-btn " : "learned"
+        "click .know-btn " : "learned",
+        "change #learning-mode " : "changeLanguage",
+        "change #order-mode " : "changeOrder"
     },
 
     initialize: function(options) {
@@ -143,6 +145,14 @@ cardsApp.SessionView = Backbone.View.extend({
         this.session.notLearnedCards.remove(cardModel);
 
         this.nextCard();
+    },
+    changeLanguage: function(e){
+        var selectedValue = e.target.value; // enaglish or russian
+        this.session.language = selectedValue;
+    },
+    changeOrder: function(e){
+        var selectedValue = e.target.value; // sequential or random
+        this.session.order = selectedValue;
     },
     finishSession: function(){
         console.log("FINISH");
