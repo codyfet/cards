@@ -8,23 +8,16 @@ cardsApp.LearningView = Backbone.View.extend({
     	"click .start-session" : "startSession"
     },
 
-    initialize: function() {
-
+    initialize: function(options) {
+        this.options = options;
         this.cardsForLearning = new cardsApp.CardsCollection();
-
-        var that = this;
-        var categories = new cardsApp.CategoriesCollection();
-        categories.fetchCategory().done(function(){
-            that.categories = categories;
-            that.render();
-            that.$el.find(".selectpicker").selectpicker();
-        });
     },
 
     render: function() {
         var tmpl = _.template(this.template);
-        this.$el.append(tmpl( { "categories": this.categories } ));
-        setTimeout(function(){$("a.info-tooltip").tooltip()}, 1500);
+        this.$el.append(tmpl( { "categories": this.options.categories } ));
+        this.$el.find(".selectpicker").selectpicker();
+        //setTimeout(function(){$("a.info-tooltip").tooltip()}, 1500);
         return this;
     },
     startSession: function(){

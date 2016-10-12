@@ -13,24 +13,18 @@ cardsApp.CardsTableView = Backbone.View.extend({
     	"click .status" : "changeStatus"
     },
 
-    initialize: function() {
-
+    initialize: function(options) {
+        this.options = options;
         this.cardsForShowing = new cardsApp.CardsCollection();
         // this.cardsForShowing.bind('add', this.redrawTable, this);
         // this.model.bind('change', this.onModelAdded, this);
         // this.model.bind('remove', this.onModelAdded, this);
-        var that = this;
-        var categories = new cardsApp.CategoriesCollection();
-        categories.fetchCategory().done(function(){
-            that.categories = categories;
-            that.render();
-            that.$el.find(".selectpicker").selectpicker();
-        });
     },
 
     render: function() {
         var tmpl = _.template(this.template);
-        this.$el.append(tmpl({ "categories" : this.categories }));
+        this.$el.append(tmpl({ "categories" : this.options.categories }));
+        this.$el.find(".selectpicker").selectpicker();
 
         // load all by default
         this.loadCategoryTable("Все");

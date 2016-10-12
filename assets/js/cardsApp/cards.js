@@ -13,65 +13,95 @@ if (!Defaults.APPLICATION_ID || !Defaults.SECRET_KEY || !Defaults.VERSION) {
 
 Backendless.initApp(Defaults.APPLICATION_ID, Defaults.SECRET_KEY, Defaults.VERSION);
 
+// Override View.remove()'s default behavior
+Backbone.View = Backbone.View.extend({
+    remove: function() {
+        // Empty the element and remove it from the DOM while preserving events
+        $(this.el).empty().detach();
+
+        return this;
+    }
+});
+
 var appModel = new cardsApp.AppModel();
 
 var Router = Backbone.Router.extend({
     routes: {
-        "main": "openMain",
-        "cardsTable": "openCardsTable",
-        "learning": "openLearning",
-        "account": "openAccount"
+        "main": "showMain",
+        "cardsTable": "showCardsTable",
+        "learning": "showLearning",
+        "account": "showAccount"
 
         // "edit/:index": "editToDo",
         // "delete/:index": "delteToDo"
     },
-    'openMain': function(){
-        $('.main-container').html('');
+    initialize: function(el) {
+        this.el = el;
+        this.showMain();
 
-        if(appModel.get("loggedUser")==""){
-            $(".navbar-nav.logged-header").hide();
-            $(".navbar-nav.not-logged-header").show();
+    },
+    currentView: null,
+    switchView: function(view) {
+        if (this.currentView) {
+            // Detach the old view
+            this.currentView.remove();
         }
-        else {
-            $(".navbar-nav.logged-header").show();
-            $(".navbar-nav.not-logged-header").hide();
-        }
 
-        var mainView = new cardsApp.MainView({
-            //model: appModel,
-            el: $('.main-container')
-        });
-        mainView.render();
+        // Move the view element into the DOM (replacing the old content)
+        this.el.html(view.el);
+
+        // Render view after it is in the DOM (styles are applied)
+        view.render();
+
+        this.currentView = view;
     },
-    'openCardsTable': function() {
-        $('.main-container').html('');
+    'showMain': function(){
+        var mainView = new cardsApp.MainView();
+        this.switchView(mainView);
+    },
+    showCardsTable: function(){
+        var that = this;
+        var categories = new cardsApp.CategoriesCollection();
+        categories.fetchCategory().done(function(){
+            var cardsTableView = new cardsApp.CardsTableView({"categories":categories });
+            that.switchView(cardsTableView);
 
-        var mainSection = new cardsApp.CardsTableView({
-            el: $('.main-container')
+            if(appModel.get("loggedUser")==""){
+                $(".navbar-nav.logged-header").hide();
+                $(".navbar-nav.not-logged-header").show();
+            }
+            else {
+                $(".navbar-nav.logged-header").show();
+                $(".navbar-nav.not-logged-header").hide();
+            }
         });
     },
-
-    'openLearning': function() {
-        $('.main-container').html('');
-
-        var mainSection = new cardsApp.LearningView({
-            el: $('.main-container')
+    showLearning: function(){
+        var that = this;
+        var categories = new cardsApp.CategoriesCollection();
+        categories.fetchCategory().done(function(){
+            var learningView = new cardsApp.LearningView({ "categories":categories });
+            that.switchView(learningView);
         });
     },
-
-    'openAccount': function() {
-        $('.main-container').html('');
-
-        var mainSection = new cardsApp.AccountView({
-            el: $('.main-container')
-        });
+    showAccount: function(){
+        var accountView = new cardsApp.AccountView();
+        this.switchView(accountView);
     }
+    // 'openAccount': function() {
+    //     $('.main-container').html('');
+
+    //     var mainSection = new cardsApp.AccountView({
+    //         el: $('.main-container')
+    //     });
+    // }
 
 });
 
-var router = new Router();
+//var router = new Router();
+var router = new Router($('.main-container'));
 
 Backbone.history.start();
 
 // open main page when application starts
-router.navigate("main", true);
+//router.navigate("main", true);

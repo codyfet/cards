@@ -8,8 +8,8 @@ cardsApp.AccountView = Backbone.View.extend({
 
     },
 
-    initialize: function() {
-        this.render();
+    initialize: function(options) {
+        this.options=options;
     },
 
     render: function() {
