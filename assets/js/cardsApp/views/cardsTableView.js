@@ -82,12 +82,6 @@ cardsApp.CardsTableView = Backbone.View.extend({
             "status": true,
             "userId": appModel.get("loggedUser").objectId
         });
-
-        // this logic redraws views before we do save request to server
-        //this.cardsForShowing.create(newCard);
-        // get added model
-        //var addedCard = this.cardsForShowing.at(this.cardsForShowing.length - 1);
-
         // this logic do save request to server with new card
         var that = this;
         var categories = new cardsApp.CategoriesCollection();
@@ -104,6 +98,10 @@ cardsApp.CardsTableView = Backbone.View.extend({
             userId: appModel.get("loggedUser").objectId
         });
         newCategory.save();
+        // update selecpicker, add new option after creating new category
+        this.$el.find(".selectpicker#category-list")
+            .append("<option>" + newCategory.get("categoryName") + "</option>")
+            .selectpicker('refresh');
         $('#myModalAddCategory').modal('hide');
     },
     removeCard: function(e){
