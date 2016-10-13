@@ -10,11 +10,13 @@ cardsApp.CardsTableView = Backbone.View.extend({
         "click .add-btn" : "addCard",
         "click .add-category-btn" : "addCategory",
         "click .remove-btn" : "removeCard",
-    	"click .status" : "changeStatus"
+    	"click .status" : "changeStatus",
+        "change select[name='cards-storage_length']": "changePageLength"
     },
 
     initialize: function(options) {
         this.options = options;
+        this.options.pageLength=10; // default pageLength
         this.cardsForShowing = new cardsApp.CardsCollection();
         // this.cardsForShowing.bind('add', this.redrawTable, this);
         // this.model.bind('change', this.onModelAdded, this);
@@ -59,7 +61,7 @@ cardsApp.CardsTableView = Backbone.View.extend({
             });
             var tableTemplate = _.template($('#categoryTableTemplate').html());
             that.$el.find(".table-wrapper").html(tableTemplate({"cards": that.cardsForShowing}));
-            that.$el.find('#example').dataTable({
+            that.$el.find('#cards-storage').dataTable({
                 "columns": [
                     { "width": "25%" },
                     { "width": "25%" },
@@ -67,7 +69,8 @@ cardsApp.CardsTableView = Backbone.View.extend({
                     { "width": "10%" },
                     { "width": "5%" },
                     { "width": "5%" }
-                ]
+                ],
+                pageLength: that.options.pageLength
             });
            removeBlocker();
         });
@@ -145,6 +148,9 @@ cardsApp.CardsTableView = Backbone.View.extend({
             cardToChange.set("status",status);
             cardToChange.save();
         });
+    },
+    changePageLength: function(e){
+        this.options.pageLength=e.target.value;
     }
 
 });
