@@ -27,7 +27,7 @@ var appModel = new cardsApp.AppModel();
 
 var Router = Backbone.Router.extend({
     routes: {
-        "main": "showMain",
+        "": "showMain",
         "cardsTable": "showCardsTable",
         "learning": "showLearning",
         "account": "showAccount"
@@ -88,20 +88,9 @@ var Router = Backbone.Router.extend({
         var accountView = new cardsApp.AccountView();
         this.switchView(accountView);
     }
-    // 'openAccount': function() {
-    //     $('.main-container').html('');
-
-    //     var mainSection = new cardsApp.AccountView({
-    //         el: $('.main-container')
-    //     });
-    // }
 
 });
 
-//var router = new Router();
 var router = new Router($('.main-container'));
 
 Backbone.history.start();
-
-// open main page when application starts
-//router.navigate("main", true);
