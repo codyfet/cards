@@ -65,6 +65,7 @@ var Router = Backbone.Router.extend({
         categories.fetchCategory().done(function(){
             var cardsTableView = new cardsApp.CardsTableView({"categories":categories });
             that.switchView(cardsTableView);
+            removeBlocker();
 
             if(appModel.get("loggedUser")==""){
                 $(".navbar-nav.logged-header").hide();
@@ -94,3 +95,19 @@ var Router = Backbone.Router.extend({
 var router = new Router($('.main-container'));
 
 Backbone.history.start();
+
+function showBlocker(){
+    $.blockUI({
+        css: {
+            "border": 0,
+            "background-color": "transparent",
+            "height": "55px"
+        },
+        message: " ",
+        blockMsgClass: 'gear-spinner'
+    });
+}
+
+function removeBlocker(){
+    $.unblockUI();
+}

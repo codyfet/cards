@@ -76,6 +76,7 @@ cardsApp.MainView = Backbone.View.extend({
         }
         if(this.validateLogForm()==true){
             this.loginUserAsync(userData);
+            showBlocker();
         }
         else {
             $("#status").html("вы ввели некорректные значения");

@@ -69,6 +69,7 @@ cardsApp.CardsTableView = Backbone.View.extend({
                     { "width": "5%" }
                 ]
             });
+           removeBlocker();
         });
 
     },
@@ -110,6 +111,7 @@ cardsApp.CardsTableView = Backbone.View.extend({
         var cardId = $(e.target).closest("tr").attr("id");
         var categoryName = $(e.target).closest("tr").find(".category-label").html();
         var categories = new cardsApp.CategoriesCollection();
+        showBlocker();
         categories.fetchCategory(categoryName).done(function(){
             var category = categories.at(0);
             var cardsCollection = category.get("cards");
