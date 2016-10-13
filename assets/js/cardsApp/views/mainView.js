@@ -64,7 +64,7 @@ cardsApp.MainView = Backbone.View.extend({
             this.registerUser(userData);
         }
         else {
-            $("#status").html("вы ввели некорректные значения");
+            showNotify("Вы ввели некорректные значения", "danger");
         }
     },
 
@@ -79,7 +79,7 @@ cardsApp.MainView = Backbone.View.extend({
             showBlocker();
         }
         else {
-            $("#status").html("вы ввели некорректные значения");
+            showNotify("Вы ввели некорректные значения", "danger");
         }
     },
 
@@ -89,21 +89,21 @@ cardsApp.MainView = Backbone.View.extend({
         user.email = userData.email;
         user.password = userData.password;
         user.name = userData.username;
-
-        $("#status").html("регистрация пользователя...");
+        showBlocker();
         Backendless.UserService.register(user, new Backendless.Async(this.userRegistered, this.gotError));
     },
 
     userRegistered: function(user) {
-        $("#status").html("регистрация прошла успешно!");
+        showNotify("Регистрация прошла успешно!");
         var user = new cardsApp.UserModel(user);
         appModel.set("loggedUser", user);
         router.navigate('cardsTable', true);
+        removeBlocker();
         $(".user-pic").removeClass("empty-avatar");
     },
 
     gotError: function(err) { // see more on error handling
-        $("#status").html("к сожалению, сервер вернул ошибку " + err.message);
+        showNotify("К сожалению, сервер вернул ошибку " + err.message, "danger");
         console.log("error message - " + err.message);
         console.log("error code - " + err.statusCode);
     },
@@ -116,9 +116,9 @@ cardsApp.MainView = Backbone.View.extend({
 
     handleResponse: function(loggedInUser) {
         console.log("User has been logged in - " + loggedInUser.objectId);
-        $("#status").html("вы успешно вошли как " + loggedInUser.name);
         appModel.set("loggedUser", loggedInUser);
         router.navigate('cardsTable', true);
+        showNotify("Вы успешно вошли как " + loggedInUser.name);
     },
 
     handleFault: function(backendlessFault) {

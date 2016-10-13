@@ -111,3 +111,19 @@ function showBlocker(){
 function removeBlocker(){
     $.unblockUI();
 }
+
+function showNotify(message, type){ // as type value you can use: 'success' 'warning' 'danger'
+    if(!message){
+        message="";
+    }
+    if(!type){
+        type="success";
+    }
+    $.notify({
+        //icon: 'glyphicon glyphicon-warning-sign',
+        message: message
+    }, {
+        type: type
+    });
+
+}
