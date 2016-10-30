@@ -31,9 +31,9 @@ cardsApp.LearningView = Backbone.View.extend({
         }
 
         var that = this;
-        this.categories.fetchCategory(categoryName).done(function(){
+        this.options.categories.fetchCategory(categoryName).done(function(){
             var counterCards = 0;
-            that.categories.each(function(category){
+            that.options.categories.each(function(category){
                 var cardsCollection = new cardsApp.CardsCollection();
                 cardsCollection = category.get("cards");
                 if(cardsCollection.length>0){
